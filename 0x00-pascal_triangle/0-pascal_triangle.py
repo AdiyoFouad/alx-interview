@@ -3,21 +3,17 @@
 A module for working with Pascal's triangle.
 '''
 
-def calculate_binomial_coefficient(n, k):
-    '''Calculates the binomial coefficient "n choose k".
-    '''
-    if k == 0 or k == n:
-        return 1
-    return calculate_binomial_coefficient(n - 1, k - 1) + calculate_binomial_coefficient(n - 1, k)
-
-def pascal_triangle(n):
+def pascal_triangle(n, i=0, triangle=None):
     '''Creates a list of lists of integers representing
     the Pascal's triangle of a given integer.
     '''
-    triangle = []
-    if type(n) is not int or n <= 0:
+    if triangle is None:
+        triangle = []
+
+    if type(n) is not int or n <= 0 or i >= n:
         return triangle
-    for i in range(n):
-        line = [calculate_binomial_coefficient(i, j) for j in range(i + 1)]
-        triangle.append(line)
-    return triangle
+
+    line = [1 if j == 0 or j == i else triangle[i - 1][j - 1] + triangle[i - 1][j] for j in range(i + 1)]
+    triangle.append(line)
+
+    return pascal_triangle(n, i + 1, triangle)
